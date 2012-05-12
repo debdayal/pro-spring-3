@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+    <contact>
+        <firstName>Kim Fung</firstName>
+        <lastName>Ho</lastName>
+        <birthDate>1980-07-30</birthDate>
+        <description>Author of ProSpring3 book</description>
+    </contact>
+</contacts>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean name="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="com.apress.prospring3.ch5.pe.Name">
+                    <bean class="com.apress.prospring3.ch5.pe.NamePropertyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="exampleBean" class="com.apress.prospring3.ch5.pe.CustomEditorExample">
+        <property name="name">
+            <value>Clarence Ho</value>
+        </property>
+    </bean>
+</beans>

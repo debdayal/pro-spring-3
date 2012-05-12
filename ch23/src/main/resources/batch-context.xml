@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:integration="http://www.springframework.org/schema/integration"
+    xmlns:file="http://www.springframework.org/schema/integration/file"    
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
+        http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean" >
+        <property name="databaseType" value="h2" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="isolationLevelForCreate" value="ISOLATION_DEFAULT"/>
+    </bean>    
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+    
+    <bean id="jobOperator"
+        class="org.springframework.batch.core.launch.support.SimpleJobOperator"
+        p:jobLauncher-ref="jobLauncher" p:jobExplorer-ref="jobExplorer"
+        p:jobRepository-ref="jobRepository" p:jobRegistry-ref="jobRegistry" />
+
+    <bean id="jobExplorer"
+        class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean"
+        p:dataSource-ref="dataSource" />
+
+    <bean id="jobRegistry"
+        class="org.springframework.batch.core.configuration.support.MapJobRegistry" />    
+    
+    <!-- Spring Integration Configuration: Start -->
+    <integration:channel id="files"/>
+    
+    <integration:channel id="requests"/>
+    
+    <integration:channel id="statuses">
+        <integration:queue capacity="10"/>
+    </integration:channel>    
+    
+    <file:inbound-channel-adapter 
+        directory="file:C:/temp/contact"
+        channel="files">
+        <integration:poller id="poller" fixed-delay="5000"/>
+    </file:inbound-channel-adapter>    
+
+    <integration:transformer input-channel="files" output-channel="requests">
+        <bean class="com.apress.prospring3.ch23.batch.integration.FileMessageToJobRequest">
+            <property name="job" ref="importContactsJob"/>
+            <property name="fileParameterName" value="inputFile"/>
+        </bean>
+    </integration:transformer>
+    
+    <integration:service-activator method="launch" input-channel="requests"
+        output-channel="statuses">
+        <bean id="messageHandler"
+            class="org.springframework.batch.integration.launch.JobLaunchingMessageHandler">
+            <constructor-arg ref="jobLauncher"/>
+        </bean>
+    </integration:service-activator>
+    <!-- Spring Integration Configuration: End -->    
+    
+    <!-- Spring MBean for JMX Monitoring -->
+    <bean id="appStatisticsBean" class="com.apress.prospring3.ch23.jmx.impl.AppStatisticsImpl"/>
+    
+    <bean id="jmxExporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="bean:name=ProSpring3ContactApp" value-ref="appStatisticsBean"/> 
+                <entry key="bean:name=ProSpring3ContactApp-hibernate" value-ref="statisticsBean"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="statisticsBean" class="org.hibernate.jmx.StatisticsService">
+        <property name="statisticsEnabled">
+            <value>true</value>
+        </property>
+        <property name="sessionFactoryJNDIName">
+            <value>sessionFactory</value>
+        </property>
+    </bean>
+        
+    <!-- Spring Batch Admin for JMX -->
+    <context:mbean-export default-domain="spring.application"/>
+    
+    <bean id="batchMBeanExporter" class="org.springframework.batch.admin.jmx.BatchMBeanExporter">
+        <property name="jobService">
+            <bean class="org.springframework.aop.framework.ProxyFactoryBean">
+                <property name="target" ref="jobService" />
+                <property name="interceptorNames" value="cacheInterceptor" />
+            </bean>
+        </property>
+        <property name="defaultDomain" value="spring.application" />
+    </bean>
+
+    <bean id="cacheInterceptor" class="org.springframework.batch.admin.util.SimpleEhCacheInterceptor" />    
+
+    <bean id="jobService" class="org.springframework.batch.admin.service.SimpleJobServiceFactoryBean">
+        <property name="jobRepository" ref="jobRepository" />
+        <property name="jobLauncher" ref="jobLauncher" />
+        <property name="jobLocator" ref="jobRegistry" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>           
+    
+</beans>

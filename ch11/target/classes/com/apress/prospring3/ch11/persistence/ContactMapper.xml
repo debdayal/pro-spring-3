@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Contact Mapper with Nested Results for Collection -->
+<mapper namespace="com.apress.prospring3.ch11.persistence.ContactMapper">
+
+    <resultMap id="contactResultMap" type="Contact">
+        <id property="id" column="ID" />
+        <result property="firstName" column="FIRST_NAME" />
+        <result property="lastName" column="LAST_NAME" />
+        <result property="birthDate" column="BIRTH_DATE" />
+    </resultMap>
+    
+    <resultMap id="contactResultDetailMap" type="Contact">
+        <id property="id" column="ID" />
+        <result property="firstName" column="FIRST_NAME" />
+        <result property="lastName" column="LAST_NAME" />
+        <result property="birthDate" column="BIRTH_DATE" />
+        <collection property="contactTelDetails" ofType="ContactTelDetail">
+            <id property="id" column="CONTACT_TEL_ID"/>
+            <result property="telType" column="TEL_TYPE"/>
+            <result property="telNumber" column="TEL_NUMBER"/>        
+        </collection>
+        <collection property="hobbies" ofType="Hobby">
+            <result property="hobbyId" column="HOBBY_ID"/>       
+        </collection>        
+    </resultMap>  
+
+    <select id="findAll" resultMap="contactResultMap">
+        SELECT
+        ID,
+        FIRST_NAME,
+        LAST_NAME,
+        BIRTH_DATE
+        FROM CONTACT
+    </select>
+    
+    <select id="findAllWithDetail" resultMap="contactResultDetailMap">
+        SELECT
+        C.ID,
+        C.FIRST_NAME,
+        C.LAST_NAME,
+        C.BIRTH_DATE,
+        T.ID AS CONTACT_TEL_ID,
+        T.TEL_TYPE,
+        T.TEL_NUMBER,
+        H.HOBBY_ID
+        FROM CONTACT C 
+             LEFT OUTER JOIN CONTACT_TEL_DETAIL T ON C.ID = T.CONTACT_ID
+             LEFT OUTER JOIN CONTACT_HOBBY_DETAIL H ON C.ID = H.CONTACT_ID             
+    </select> 
+    
+    <select id="findById" parameterType="long" resultMap="contactResultDetailMap">
+        SELECT
+        C.ID,
+        C.FIRST_NAME,
+        C.LAST_NAME,
+        C.BIRTH_DATE,
+        T.ID AS CONTACT_TEL_ID,
+        T.TEL_TYPE,
+        T.TEL_NUMBER,
+        H.HOBBY_ID
+        FROM CONTACT C 
+             LEFT OUTER JOIN CONTACT_TEL_DETAIL T ON C.ID = T.CONTACT_ID
+             LEFT OUTER JOIN CONTACT_HOBBY_DETAIL H ON C.ID = H.CONTACT_ID
+        WHERE C.ID = #{id}             
+    </select>
+    
+    <select id="findByFirstNameAndLastName" parameterType="SearchCriteria" resultMap="contactResultDetailMap">
+        SELECT
+        C.ID,
+        C.FIRST_NAME,
+        C.LAST_NAME,
+        C.BIRTH_DATE,
+        T.ID AS CONTACT_TEL_ID,
+        T.TEL_TYPE,
+        T.TEL_NUMBER,
+        H.HOBBY_ID
+        FROM CONTACT C 
+             LEFT OUTER JOIN CONTACT_TEL_DETAIL T ON C.ID = T.CONTACT_ID
+             LEFT OUTER JOIN CONTACT_HOBBY_DETAIL H ON C.ID = H.CONTACT_ID
+        <where>
+            <if test="firstName != null">
+                first_name = #{firstName}
+            </if>
+            <if test="lastName != null">
+                AND last_name = #{lastName}
+            </if>   
+        </where>               
+    </select>  
+    
+    <insert id="insertContact" parameterType="Contact" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO CONTACT (FIRST_NAME, LAST_NAME, BIRTH_DATE) 
+        VALUES (#{firstName}, #{lastName}, #{birthDate})    
+    </insert>   
+    
+    <update id="updateContact" parameterType="Contact">
+        UPDATE CONTACT SET
+            FIRST_NAME = #{firstName},
+            LAST_NAME = #{lastName},
+            BIRTH_DATE = #{birthDate}
+        WHERE ID = #{id}   
+    </update>       
+    
+    <delete id="deleteContact" parameterType="long">
+        DELETE FROM CONTACT WHERE ID = #{id}
+    </delete>         
+    
+</mapper>

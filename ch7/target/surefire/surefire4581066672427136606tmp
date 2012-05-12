@@ -1,0 +1,5 @@
+#surefire
+#Mon Nov 14 15:10:27 CST 2011
+user.dir=C\:\\workspace\\pro-spring-book-source\\ch7
+localRepository=C\:\\MavenRepository
+basedir=C\:\\workspace\\pro-spring-book-source\\ch7

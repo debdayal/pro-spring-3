@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+    start-state="start">
+
+    <view-state id="start" view="list.xhtml">
+        <on-entry>
+            <evaluate expression="contactController.newContactListBean()" result="viewScope.contactListBean"/>
+        </on-entry>
+        <transition on="view" to="show">
+            <set name="requestScope.contactId" value="contactListBean.selectedContact.id"/>
+        </transition>
+        <transition on="add" to="add-step-1">
+            <evaluate expression="contactController.newContactBean()" result="flowScope.contactBean"/>
+        </transition>
+    </view-state>
+    
+    <view-state id="add-step-1" view="add-step-1.xhtml">
+        <transition on="next" to="add-step-2"/>
+    </view-state>
+    
+    <view-state id="add-step-2" view="add-step-2.xhtml">
+        <transition on="next" to="review"/>
+        <transition on="back" to="add-step-1"/>        
+    </view-state>
+
+    <view-state id="review" view="review.xhtml">
+        <transition on ="next" to="complete">
+            <evaluate expression="contactController.saveContact(flowRequestContext)"/>
+        </transition>
+        <transition on="back" to="add-step-2"/>        
+    </view-state>
+    
+    <view-state id="complete" view="complete.xhtml">    
+        <transition on="continue" to="finish"/>
+    </view-state>
+    
+    <end-state id="finish"/>    
+    
+    <view-state id="show" view="show.xhtml">
+        <on-entry>
+            <evaluate expression="contactController.showContact(flowRequestContext)"
+                result="viewScope.contact"/>
+        </on-entry>
+        <transition on ="back" to="start"/>      
+    </view-state>       
+    
+    <global-transitions>
+        <transition on="exit" to="start"/>
+    </global-transitions>
+
+</flow>

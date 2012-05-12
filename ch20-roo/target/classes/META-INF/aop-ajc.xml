@@ -1,0 +1,14 @@
+<aspectj>
+<aspects>
+<aspect name="com.apress.prospring3.ch20.domain.Contact_Roo_Jpa_Entity"/>
+<aspect name="com.apress.prospring3.ch20.domain.Contact_Roo_ToString"/>
+<aspect name="com.apress.prospring3.ch20.repository.ContactRepository_Roo_Jpa_Repository"/>
+<aspect name="com.apress.prospring3.ch20.domain.Contact_Roo_JavaBean"/>
+<aspect name="com.apress.prospring3.ch20.domain.Contact_Roo_Configurable"/>
+<aspect name="com.apress.prospring3.ch20.service.ContactService_Roo_Service"/>
+<aspect name="com.apress.prospring3.ch20.web.controller.ApplicationConversionServiceFactoryBean_Roo_ConversionService"/>
+<aspect name="com.apress.prospring3.ch20.domain.Contact_Roo_Jpa_ActiveRecord"/>
+<aspect name="com.apress.prospring3.ch20.service.ContactServiceImpl_Roo_Service"/>
+</aspects>
+</aspectj>
+

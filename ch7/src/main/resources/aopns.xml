@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <aop:config> 
+        
+        <!-- Sample for simple pointcut -->
+<!--
+        <aop:pointcut id="fooExecution" expression="execution(* com.apress.prospring3.ch7..foo*(int))"/>
+-->
+
+        <!-- Sample for pointcut with bean name checking and parameter passing -->
+        <aop:pointcut id="fooExecution" expression="execution(* foo*(int)) 
+            and args(intValue) and bean(myDependency*)"/>
+   
+        <aop:aspect ref="advice">
+            <aop:before pointcut-ref="fooExecution" method="simpleBeforeAdvice"/>         
+            <aop:around pointcut-ref="fooExecution" method="simpleAroundAdvice"/>  
+        </aop:aspect>
+        
+    </aop:config>
+
+    <bean id="advice" class="com.apress.prospring3.ch7.aopns.MyAdvice"/>
+    
+    <bean id="myDependency"  class="com.apress.prospring3.ch7.aopns.MyDependency"/>
+    
+    <bean id="myBean" class="com.apress.prospring3.ch7.aopns.MyBean">
+        <property name="dep" ref="myDependency"/>
+    </bean>
+</beans>

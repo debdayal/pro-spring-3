@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Contact Mapper with Nested Select for Collection -->
+<mapper namespace="com.apress.prospring3.ch11.persistence.ContactMapper">
+
+    <resultMap id="contactResultMap" type="Contact">
+        <id property="id" column="id" />
+        <result property="firstName" column="first_name" />
+        <result property="lastName" column="last_name" />
+        <result property="birthDate" column="birth_date" />
+    </resultMap>
+    
+    <resultMap id="contactResultDetailMap" type="Contact">
+        <id property="id" column="id" />
+        <result property="firstName" column="first_name" />
+        <result property="lastName" column="last_name" />
+        <result property="birthDate" column="birth_date" />
+        <collection property="contactTelDetails" ofType="ContactTelDetail" 
+            column="id" select="selectTelDetailsForContact">    
+        </collection> 
+        <collection property="hobbies" ofType="Hobby" 
+            column="id" select="selectHobbiesForContact">    
+        </collection>              
+    </resultMap>    
+    
+    <resultMap id="contactTelDetailResultMap" type="ContactTelDetail" >
+        <id property="id" column="id" />
+        <result property="telType" column="tel_type"/>
+        <result property="telNumber" column="tel_number"/>
+    </resultMap>  
+    
+    <resultMap id="contactHobbyDetailResultMap" type="ContactHobbyDetail" >
+        <result property="hobbyId" column="hobby_id"/>
+    </resultMap>       
+
+    <select id="findAll" resultMap="contactResultMap">
+        SELECT
+        ID,
+        FIRST_NAME,
+        LAST_NAME,
+        BIRTH_DATE
+        FROM CONTACT
+    </select>
+    
+    <select id="findAllWithDetail" resultMap="contactResultDetailMap">
+        SELECT
+        C.ID,
+        C.FIRST_NAME,
+        C.LAST_NAME,
+        C.BIRTH_DATE
+        FROM CONTACT C 
+    </select>    
+
+    <select id="selectTelDetailsForContact" parameterType="long"
+        resultType="ContactTelDetail" resultMap="contactTelDetailResultMap">
+        SELECT 
+        ID,
+        TEL_TYPE,
+        TEL_NUMBER
+        FROM CONTACT_TEL_DETAIL WHERE CONTACT_ID = #{id}
+    </select>
+
+    <select id="selectHobbiesForContact" parameterType="long"
+        resultType="Hobby" resultMap="contactHobbyDetailResultMap">
+        SELECT 
+        HOBBY_ID
+        FROM CONTACT_HOBBY_DETAIL WHERE CONTACT_ID = #{id}
+    </select>   
+    
+</mapper>

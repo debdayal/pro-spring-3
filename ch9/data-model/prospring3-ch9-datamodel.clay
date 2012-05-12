@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="7140d7c6:132d37c0964:-8000" name="prospring3-samples-datamodel" sql-dialect-id="jp.azzurri.clay.dialect.MySQL_5_0_Dialect" version="1.0">
+<schema-list>
+<schema id="7140d7c6:132d37c0964:-7ffd" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="7140d7c6:132d37c0964:-7fff" name="CONTACT">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7ffa" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="60" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7ff9" mandatory="true" name="FIRST_NAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="40" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7ff8" mandatory="true" name="LAST_NAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7f81" mandatory="false" name="BIRTH_DATE">
+<data-type name="DATE" selected-variant-pattern="DATE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="0" id="4c90265b:132f23bc3ae:-7ffa" mandatory="true" name="VERSION">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+</column-list>
+<primary-key id="7140d7c6:132d37c0964:-7ffe" name="PK_CONTACT">
+<primary-key-column name="ID"/>
+</primary-key>
+<unique-key-list>
+<unique-key id="7140d7c6:132d37c0964:-7ff5" name="UQ_CONTACT_1">
+<unique-key-column name="FIRST_NAME"/>
+<unique-key-column name="LAST_NAME"/>
+</unique-key>
+</unique-key-list>
+</table>
+<table id="7140d7c6:132d37c0964:-7ff4" name="CONTACT_TEL_DETAIL">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7ff0" mandatory="true" name="ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7fbb" mandatory="true" name="CONTACT_ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7fb8" mandatory="true" name="TEL_TYPE">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="7140d7c6:132d37c0964:-7fb7" mandatory="true" name="TEL_NUMBER">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="0" id="4c90265b:132f23bc3ae:-7ff7" mandatory="true" name="VERSION">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+</column-list>
+<primary-key id="7140d7c6:132d37c0964:-7ff3" name="PK_CONTACT_TEL_DETAIL">
+<primary-key-column name="ID"/>
+</primary-key>
+<unique-key-list>
+<unique-key id="7140d7c6:132d37c0964:-7f84" name="UQ_CONTACT_TEL_DETAIL_1">
+<unique-key-column name="CONTACT_ID"/>
+<unique-key-column name="TEL_TYPE"/>
+</unique-key>
+</unique-key-list>
+<foreign-key-list>
+<foreign-key id="7140d7c6:132d37c0964:-7fad" name="FK_CONTACT_TEL_DETAIL_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_CONTACT" referenced-table="CONTACT" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="CONTACT_ID" referenced-key-column-name="ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="4c90265b:132f23bc3ae:-7ff6" name="HOBBY">
+<column-list>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="4c90265b:132f23bc3ae:-7ff2" mandatory="true" name="HOBBY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="4c90265b:132f23bc3ae:-7ff5" name="PK_HOBBY">
+<primary-key-column name="HOBBY_ID"/>
+</primary-key>
+</table>
+<table id="4c90265b:132f23bc3ae:-7ff1" name="CONTACT_HOBBY_DETAIL">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="4c90265b:132f23bc3ae:-7feb" mandatory="true" name="CONTACT_ID">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="4c90265b:132f23bc3ae:-7fe6" mandatory="true" name="HOBBY_ID">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="4c90265b:132f23bc3ae:-7ff0" name="PK_CONTACT_HOBBY_DETAIL">
+<primary-key-column name="CONTACT_ID"/>
+<primary-key-column name="HOBBY_ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="4c90265b:132f23bc3ae:-7fcc" name="FK_CONTACT_HOBBY_DETAIL_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_CONTACT" referenced-table="CONTACT" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="CONTACT_ID" referenced-key-column-name="ID"/>
+</foreign-key>
+<foreign-key id="4c90265b:132f23bc3ae:-7fa7" name="FK_CONTACT_HOBBY_DETAIL_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_HOBBY" referenced-table="HOBBY" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="HOBBY_ID" referenced-key-column-name="HOBBY_ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="7140d7c6:132d37c0964:-7fff" x="71" y="91"/>
+<table-figure refid="7140d7c6:132d37c0964:-7ff4" x="387" y="92"/>
+<table-figure refid="4c90265b:132f23bc3ae:-7ff6" x="465" y="340"/>
+<table-figure refid="4c90265b:132f23bc3ae:-7ff1" x="102" y="336"/>
+</diagram>
+</clay-model>

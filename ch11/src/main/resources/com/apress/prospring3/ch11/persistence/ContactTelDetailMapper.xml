@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Contact Tel Detail Mapper -->
+<mapper namespace="com.apress.prospring3.ch11.persistence.ContactTelDetailMapper">
+
+    <resultMap id="contactTelDetailResultMap" type="ContactTelDetail">
+        <id property="id" column="id" />
+        <result property="telType" column="tel_type" />
+        <result property="telNumber" column="tel_number" />
+    </resultMap>
+
+    <select id="selectTelDetailForContact" parameterType="long" resultMap="contactTelDetailResultMap">
+        SELECT
+        ID,
+        TEL_TYPE,
+        TEL_NUMBER
+        FROM CONTACT_TEL_DETAIL WHERE CONTACT_ID = #{contactId}
+    </select>
+
+    <insert id="insertContactTelDetail" parameterType="ContactTelDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO CONTACT_TEL_DETAIL (CONTACT_ID, TEL_TYPE, TEL_NUMBER) 
+        VALUES (#{contact.id}, #{telType}, #{telNumber})    
+    </insert>
+
+    <update id="updateContactTelDetail" parameterType="ContactTelDetail">
+        UPDATE CONTACT_TEL_DETAIL SET
+            TEL_TYPE = #{telType},
+            TEL_NUMBER = #{telNumber}
+        WHERE ID = #{id}   
+    </update>
+    
+    <delete id="deleteOrphanContactTelDetail">
+        DELETE FROM CONTACT_TEL_DETAIL
+        WHERE ID IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>        
+    </delete>
+    
+    <delete id="deleteTelDetailForContact" parameterType="long">
+        DELETE FROM CONTACT_TEL_DETAIL WHERE CONTACT_ID = #{contactId}
+    </delete>
+
+</mapper>

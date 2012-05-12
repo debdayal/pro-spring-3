@@ -1,0 +1,16 @@
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-12 12:47:45
+project --topLevelPackage com.apress.prospring3.ch20 --projectName ch20-roo --java 6
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-12 12:47:45
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-12 12:47:47
+persistence setup --database H2_IN_MEMORY --provider HIBERNATE 
+entity jpa --class ~.domain.Contact
+field string --fieldName firstName --notNull --sizeMin 3 --sizeMax 60
+field string --fieldName lastName --notNull --sizeMin 1 --sizeMax 40
+field date --fieldName birthDate --type java.util.Date
+repository jpa --interface ~.repository.ContactRepository --entity ~.domain.Contact
+service --interface ~.service.ContactService --entity ~.domain.Contact
+web mvc setup
+web mvc all --package ~.web.controller
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-12 15:01:21
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-31 12:54:34
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-31 14:00:54

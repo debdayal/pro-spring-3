@@ -1,0 +1,40 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:p="http://primefaces.org/ui"
+	  			template="/WEB-INF/layouts/standard.xhtml">
+
+<ui:define name="title">#{msg['application_name']}</ui:define>
+
+<ui:define name="content">
+
+<h1>#{msg['title_contact_add_step_1']}</h1>
+
+<h:form >
+
+    <p:messages/>
+    <h:panelGrid columns="2">
+        <h:outputLabel for="firstName">#{msg['label_contact_first_name']}</h:outputLabel>
+        <p:inputText id="firstName" value="#{contactBean.contact.firstName}"/>
+        <h:outputLabel for="lastName">#{msg['label_contact_last_name']}</h:outputLabel>
+        <p:inputText id="lastName" value="#{contactBean.contact.lastName}"/>
+        <h:outputLabel for="birthDate">#{msg['label_contact_birth_date']}</h:outputLabel>
+        <p:calendar id="birthDate" value="#{contactBean.contact.birthDate}" pattern="yyyy-MM-dd">
+            <f:converter converterId="jodaDataTimeConverter" />
+        </p:calendar>
+    </h:panelGrid>   
+
+    <p:toolbar>  
+        <p:toolbarGroup align="left">
+            <p:commandButton value="Next" action="next" execute="@form" update="@form"/>
+            <p:commandButton value="Exit" action="exit" immediate="true"/>        
+        </p:toolbarGroup>
+    </p:toolbar>  
+
+</h:form>  
+
+</ui:define>
+
+</ui:composition>

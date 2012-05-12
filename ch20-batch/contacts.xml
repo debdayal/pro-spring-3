@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+    <contact>
+        <firstName>Kim Fung</firstName>
+        <lastName>Ho</lastName>
+        <birthDate>1980-07-30</birthDate>
+        <hobby>
+            <hobbyId>Swimming</hobbyId>
+        </hobby>
+        <hobby>
+            <hobbyId>Movies</hobbyId>
+        </hobby>
+    </contact>
+</contacts>

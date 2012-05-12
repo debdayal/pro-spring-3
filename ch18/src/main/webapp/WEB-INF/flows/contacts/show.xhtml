@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:p="http://primefaces.org/ui"
+	  			template="/WEB-INF/layouts/standard.xhtml">
+
+<ui:define name="title">#{msg['application_name']}</ui:define>
+
+<ui:define name="content">
+
+<h1>Contact</h1>
+
+<h:form >      
+
+    <h3>
+        <h:outputText value="#{msg['label_contact_first_name']}: "/>
+        <h:outputText value="#{contact.firstName}"/>
+        <br/>
+        <h:outputText value="#{msg['label_contact_last_name']}: "/>
+        <h:outputText value="#{contact.lastName}"/>
+        <br/>
+        <h:outputText value="#{msg['label_contact_birth_date']}: "/>
+        <h:outputText value="#{contact.birthDate}">
+            <f:converter converterId="jodaDataTimeConverter" />
+        </h:outputText>
+    </h3>
+    <h3>#{msg['label_contact_hobbies']}</h3>  
+    <p:dataList value="#{contact.hobbiesAsList}" var="hobby">  
+        #{hobby.hobbyId} 
+    </p:dataList>
+    <br/>    
+
+    <p:toolbar>  
+        <p:toolbarGroup align="left">
+            <p:commandButton value="Back" action="back"/>       
+        </p:toolbarGroup>
+    </p:toolbar> 
+</h:form>  
+
+</ui:define>
+
+</ui:composition>

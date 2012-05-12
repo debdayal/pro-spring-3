@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"	
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<description>ProSpring 3 Chapter 4 - Spring annotation support.</description>
+
+	<!-- Inform Spring to scan the annotation within codes for DI requirements -->
+	<context:annotation-config/>
+
+    <!-- Inform Spring to scan the injectable components base on packages -->
+    <context:component-scan base-package="com.apress.prospring3.ch4.annotation;com.apress.prospring3.ch4.annotation1">
+        <context:exclude-filter type="assignable" expression="com.apress.prospring3.ch4.annotation1.Bean2"/>
+    </context:component-scan>
+    
+    <!-- Sample for constructor injection -->   
+    <bean id="message" class="java.lang.String"
+        c:_0="This is a configurable message"/>
+        
+    <!-- Sample for collection injection -->
+    <util:map id="map" map-class="java.util.HashMap">
+        <entry key="someValue">
+            <value>Hello World!</value>
+        </entry>
+        <entry key="someBean">
+            <ref bean="oracle"/>
+        </entry>   
+    </util:map> 
+    
+    <util:properties id="props">
+        <prop key="firstName">Clarence</prop>
+        <prop key="secondName">Ho</prop>
+    </util:properties>
+    
+    <util:set id="set">
+       <value>Hello World!</value>
+        <ref bean="oracle"/>   
+    </util:set> 
+    
+    <util:list id="list">
+        <value>Hello World!</value>
+        <ref bean="oracle"/> 
+    </util:list>            	
+</beans>

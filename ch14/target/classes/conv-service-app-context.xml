@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.apress.prospring3.ch14.converter.StringToDateTimeConverter"/>
+                <bean class="com.apress.prospring3.ch14.converter.ContactToAnotherContactConverter"/>
+            </list>           
+        </property>
+    </bean>
+
+    <bean id="clarence" class="com.apress.prospring3.ch14.domain.Contact"
+        p:firstName="Clarence"
+        p:lastName="Ho"
+        p:birthDate="1978-08-09"
+        p:personalSite="http://www.clarence.com"
+    />
+
+</beans>

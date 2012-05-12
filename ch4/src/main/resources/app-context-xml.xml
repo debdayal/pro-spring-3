@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"	
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<!-- Sample for setter injection -->
+    <!--
+	<bean id="messageRenderer" class="com.apress.prospring3.ch4.xml.StandardOutMessageRenderer">
+		<property name="messageProvider">
+			<ref bean="messageProvider"/>
+		</property>
+	</bean>
+	-->
+
+	<!-- Sample for setter injection -->	
+	<!-- This bean is the same as above, just used to p namespace -->
+	<bean id="messageRenderer" class="com.apress.prospring3.ch4.xml.StandardOutMessageRenderer"
+		p:messageProvider-ref="messageProvider"/>
+
+	<!-- Sample for bean declaration -->
+    <!--
+	<bean id="messageProvider" class="com.apress.prospring3.ch4.xml.HelloWorldMessageProvider"/>
+    -->
+
+    <!-- Sample for constructor injection -->
+    <bean id="messageProvider" class="com.apress.prospring3.ch4.xml.ConfigurableMessageProvider">
+        <constructor-arg>
+            <value>This is a configurable message</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- Sample for constructor injection -->
+    <!--
+    <bean id="messageProvider" class="com.apress.prospring3.ch4.xml.ConfigurableMessageProvider"
+        c:message="This is a configurable message"/>
+    -->
+
+    <!-- Sample for constructor confusion -->
+    <bean id="constructorConfusion" class="com.apress.prospring3.ch4.xml.ConstructorConfusion">
+        <constructor-arg type="int">
+            <value>90</value>
+        </constructor-arg>
+    </bean> 
+
+    <!-- injecting built-in vals sample -->
+    <bean id="injectSimple" class="com.apress.prospring3.ch4.xml.InjectSimple">
+        <property name="name">
+            <value>John Smith</value>
+        </property>
+        <property name="age">
+            <value>35</value>
+        </property>
+        <property name="height">
+            <value>1.78</value>
+        </property>
+        <property name="programmer">
+            <value>true</value>
+        </property>
+        <property name="ageInSeconds">
+            <value>1103760000</value>
+        </property>
+    </bean> 
+    
+    <!-- injecting values using SpEL -->
+    <bean id="injectSimpleConfig" class="com.apress.prospring3.ch4.xml.InjectSimpleConfig"/>    
+    
+    <!-- injecting built-in vals sample -->
+    <bean id="injectSimpleSpel" class="com.apress.prospring3.ch4.xml.InjectSimpleSpel">
+        <property name="name">
+            <value>#{injectSimpleConfig.name}</value>
+        </property>
+        <property name="age">
+            <value>#{injectSimpleConfig.age + 1}</value>
+        </property>
+        <property name="height">
+            <value>#{injectSimpleConfig.height}</value>
+        </property>
+        <property name="programmer">
+            <value>#{injectSimpleConfig.programmer}</value>
+        </property>
+        <property name="ageInSeconds">
+            <value>#{injectSimpleConfig.ageInSeconds}</value>
+        </property>
+    </bean>        
+    
+    <!-- oracle bean used for a few examples --> 
+    <bean id="oracle" name="wiseworm" class="com.apress.prospring3.ch4.BookwormOracle"/>      
+        
+    <!-- inject ref sample (using id) -->
+    <!--
+    <bean id="injectRef" class="com.apress.prospring3.ch4.xml.InjectRef">
+        <property name="oracle">
+            <ref local="oracle"/>
+        </property>
+    </bean>
+    -->
+    
+    <!-- inject ref sample (using name) --> 
+    <bean name="injectRef" class="com.apress.prospring3.ch4.xml.InjectRef">
+        <property name="oracle">
+            <ref bean="wiseworm"/>
+        </property>
+    </bean>
+    
+    <!-- hierarchical application contexts -->
+    <!--
+    <bean id="injectBean" class="java.lang.String">
+        <constructor-arg>
+            <value>Bean In Child</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="target1" class="com.apress.prospring3.ch4.SimpleTarget">
+        <property name="val">
+            <ref bean="injectBeanParent"/>
+        </property>
+    </bean>
+    
+    <bean id="target2" class="com.apress.prospring3.ch4.SimpleTarget">
+        <property name="val">
+            <ref bean="injectBean"/>
+        </property>
+    </bean>
+    
+    <bean id="target3" class="com.apress.prospring3.ch4.SimpleTarget">
+        <property name="val">
+            <ref parent="injectBean"/>
+        </property>
+    </bean>
+    -->
+
+    <!-- collection injection samples -->
+    <bean id="injectCollection" class="com.apress.prospring3.ch4.xml.CollectionInjection">
+        <property name="map">
+            <map>
+                <entry key="someValue">
+                    <value>Hello World!</value>
+                </entry>
+                <entry key="someBean">
+                    <ref local="oracle"/>
+                </entry>
+            </map>
+        </property>
+        <property name="props">
+            <props>
+                <prop key="firstName">Clarence</prop>
+                <prop key="secondName">Ho</prop>
+            </props>
+        </property>
+        <property name="set">
+            <set>
+                <value>Hello World!</value>
+                <ref local="oracle"/>
+            </set>
+        </property>
+        <property name="list">
+            <list>
+                <value>Hello World!</value>
+                <ref local="oracle"/>
+            </list>
+        </property>
+    </bean>      
+    
+    <!-- aliasing examples -->
+    <bean id="name1" name="name2 name3,name4;name5" class="java.lang.String"/>
+    <alias name="name1" alias="name6"/>    
+    
+    <!-- non-singleton examples -->
+    <bean id="nonSingleton" class="java.lang.String" scope="prototype">
+        <constructor-arg>
+            <value>Clarence Ho</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- inheritance examples -->
+    <bean id="inheritParent" class="com.apress.prospring3.ch4.inheritance.SimpleBean">
+        <property name="name">
+            <value>Clarence Ho</value>
+        </property>
+        <property name="age">
+            <value>22</value>
+        </property>
+    </bean>
+    
+    <bean id="inheritChild" class="com.apress.prospring3.ch4.inheritance.SimpleBean" parent="inheritParent">
+        <property name="age">
+            <value>35</value>
+        </property>
+    </bean>          
+    
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_apress_prospring3_ch20_domain_Contact" object="${contact}" path="/contacts" z="ON/6xGzcVixER/q4yAc4RrfFT6Y=">
+        <field:display field="firstName" id="s_com_apress_prospring3_ch20_domain_Contact_firstName" object="${contact}" z="ZpbprhlIDCVlgnOYlEmx7AfF4Ig="/>
+        <field:display field="lastName" id="s_com_apress_prospring3_ch20_domain_Contact_lastName" object="${contact}" z="NDzLIdsjCj3pIQCj23tZLO7Cs9g="/>
+        <field:display date="true" dateTimePattern="${contact_birthdate_date_format}" field="birthDate" id="s_com_apress_prospring3_ch20_domain_Contact_birthDate" object="${contact}" z="TMQhx+YNCeZZis/7L0Gf3tBQK0Q="/>
+    </page:show>
+</div>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:integration="http://www.springframework.org/schema/integration"
+    xmlns:file="http://www.springframework.org/schema/integration/file"    
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
+        http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file-2.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean" >
+        <property name="databaseType" value="h2" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="isolationLevelForCreate" value="ISOLATION_DEFAULT"/>
+    </bean>    
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean> 
+    
+    <bean id="jobOperator"
+        class="org.springframework.batch.core.launch.support.SimpleJobOperator"
+        p:jobLauncher-ref="jobLauncher" p:jobExplorer-ref="jobExplorer"
+        p:jobRepository-ref="jobRepository" p:jobRegistry-ref="jobRegistry" />
+
+    <bean id="jobExplorer"
+        class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean"
+        p:dataSource-ref="dataSource" />
+
+    <bean id="jobRegistry"
+        class="org.springframework.batch.core.configuration.support.MapJobRegistry" />       
+    
+    <!-- Spring Integration Configuration: Start -->
+    <integration:channel id="files"/>
+    
+    <integration:channel id="requests"/>
+    
+    <integration:channel id="statuses">
+        <integration:queue capacity="10"/>
+    </integration:channel>    
+    
+    <file:inbound-channel-adapter 
+        directory="file:C:/temp/contact"
+        channel="files">
+        <integration:poller id="poller" fixed-delay="5000"/>
+    </file:inbound-channel-adapter>    
+
+    <integration:transformer input-channel="files" output-channel="requests">
+        <bean class="com.apress.prospring3.ch23.batch.integration.FileMessageToJobRequest">
+            <property name="job" ref="importContactsJob"/>
+            <property name="fileParameterName" value="inputFile"/>
+        </bean>
+    </integration:transformer>
+    
+    <integration:service-activator method="launch" input-channel="requests"
+        output-channel="statuses">
+        <bean id="messageHandler"
+            class="org.springframework.batch.integration.launch.JobLaunchingMessageHandler">
+            <constructor-arg ref="jobLauncher"/>
+        </bean>
+    </integration:service-activator>
+    <!-- Spring Integration Configuration: End -->     
+
+</beans>

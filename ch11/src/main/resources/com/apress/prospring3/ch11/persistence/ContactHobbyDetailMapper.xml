@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Contact Hobby Detail Mapper -->
+<mapper namespace="com.apress.prospring3.ch11.persistence.ContactHobbyDetailMapper">
+
+    <insert id="insertContactHobbyDetail" parameterType="ContactHobbyDetail">
+        INSERT INTO CONTACT_HOBBY_DETAIL (CONTACT_ID, HOBBY_ID) 
+        VALUES (#{contactId}, #{hobbyId})    
+    </insert>
+    
+    <delete id="deleteHobbyDetailForContact" parameterType="long">
+        DELETE FROM CONTACT_HOBBY_DETAIL WHERE CONTACT_ID = #{contactId}
+    </delete>
+
+</mapper>
+

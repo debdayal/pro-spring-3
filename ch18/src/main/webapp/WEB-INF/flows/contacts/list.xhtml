@@ -1,0 +1,63 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:p="http://primefaces.org/ui"
+	  			template="/WEB-INF/layouts/standard.xhtml">
+
+<ui:define name="title">#{msg['application_name']}</ui:define>
+
+<ui:define name="content">
+
+<h:form>
+    <h:panelGrid columns="1">
+    
+    <p:commandButton value="#{msg['label_contact_new']}" action="add"/>   
+
+    <p:dataTable var="contact" value="#{contactListBean.contacts}"  
+                 paginator="true" rows="10"  
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 rowsPerPageTemplate="5,10,15"
+                 rowKey="#{contact.id}"
+                 selectionMode="single"
+                 selection="#{contactListBean.selectedContact}">  
+        <f:facet name="header"> 
+            #{msg['label_contact_list']} 
+        </f:facet>  
+  
+        <p:column sortBy="#{contact.firstName}">  
+            <f:facet name="header">  
+                <h:outputText value="#{msg['label_contact_first_name']}" />  
+            </f:facet>  
+            <h:outputText value="#{contact.firstName}" />  
+        </p:column>  
+  
+        <p:column sortBy="#{contact.lastName}">  
+            <f:facet name="header">  
+                <h:outputText value="#{msg['label_contact_last_name']}" />  
+            </f:facet>  
+            <h:outputText value="#{contact.lastName}" />  
+        </p:column>  
+  
+        <p:column sortBy="#{contact.birthDate}">  
+            <f:facet name="header">  
+                <h:outputText value="#{msg['label_contact_birth_date']}" />  
+            </f:facet>  
+            <h:outputText value="#{contact.birthDate}">
+                <f:converter converterId="jodaDataTimeConverter" />
+            </h:outputText>
+        </p:column>
+
+        <f:facet name="footer">  
+            <p:commandButton value="View Selected" icon="ui-icon-search"  
+                    update="form:display" action="view"/>  
+        </f:facet>           
+    </p:dataTable>  
+    
+    </h:panelGrid>
+  
+</h:form>  
+</ui:define>
+
+</ui:composition>

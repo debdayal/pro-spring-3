@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"/>
+
+    <bean id="builtInSample" class="com.apress.prospring3.ch14.pe.PropertyEditorBean">
+        <property name="bytes">
+            <value>Hello World</value>
+        </property>    
+        <property name="cls">
+            <value>java.lang.String</value>
+        </property>
+        <property name="trueOrFalse">
+            <value>true</value>
+        </property>
+        <property name="stringList">
+            <util:list>
+                <value>String member 1</value>
+                <value>String member 2</value>
+            </util:list>
+        </property>
+<!--         <property name="date">
+            <value>2011-12-29</value>
+        </property>   -->
+        <property name="floatValue">
+            <value>123.45678</value>
+        </property> 
+        <property name="file">
+            <value>classpath:test.txt</value>
+        </property>
+        <property name="stream">
+            <value>classpath:test.txt</value>
+        </property> 
+        <property name="locale">
+            <value>en_US</value>
+        </property>
+        <property name="pattern">
+            <value>a*b</value>
+        </property> 
+        <property name="properties">
+            <value> 
+                name=foo 
+                age=19 
+            </value>
+        </property>               
+        <property name="trimString">
+            <value>   String need trimming   </value>
+        </property>
+        <property name="url">
+            <value>http://www.springframework.org</value>
+        </property>
+    </bean>
+</beans>
